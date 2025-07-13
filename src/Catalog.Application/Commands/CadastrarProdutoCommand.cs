@@ -23,17 +23,22 @@ public class CadastrarProdutoCommandHandler : IRequestHandler<CadastrarProdutoCo
     {
         var dto = request.Produto;
 
-        var categoria = await _categoriaRepository
-            .ObterTodosAsync()
-            .ContinueWith(t => t.Result.FirstOrDefault(c => c.Nome == dto.Categoria), cancellationToken);
+        var categoria = await _categoriaRepository.ObterPorNomeAsync(dto.Categoria);
+
+        Guid categoriaId;
 
         if (categoria is null)
         {
             categoria = new Categoria(dto.Categoria);
             await _categoriaRepository.AdicionarAsync(categoria);
+            categoriaId = categoria.Id;
+        }
+        else
+        {
+            categoriaId = categoria.Id;
         }
 
-        var produto = new Produto(dto.Nome, dto.Descricao, dto.Preco, categoria);
+        var produto = new Produto(dto.Nome, dto.Descricao, dto.Preco, categoriaId);
         await _produtoRepository.AdicionarAsync(produto);
         await _unitOfWork.CommitAsync();
 

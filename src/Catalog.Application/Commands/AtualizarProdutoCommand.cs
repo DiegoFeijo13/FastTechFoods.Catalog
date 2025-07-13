@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Catalog.Application.Commands;
 
-public record AtualizarProdutoCommand(long Id, ProdutoInputDTO Produto) : IRequest<bool>;
+public record AtualizarProdutoCommand(Guid Id, ProdutoInputDTO Produto) : IRequest<bool>;
 public class AtualizarProdutoCommandHandler : IRequestHandler<AtualizarProdutoCommand, bool>
 {
     private readonly IProdutoRepository _produtoRepository;
@@ -38,7 +38,7 @@ public class AtualizarProdutoCommandHandler : IRequestHandler<AtualizarProdutoCo
             await _categoriaRepository.AdicionarAsync(categoria);
         }
 
-        produto.Atualizar(dto.Nome, dto.Descricao, dto.Preco, categoria);
+        produto.Atualizar(dto.Nome, dto.Descricao, dto.Preco, categoria.Id);
         await _produtoRepository.AtualizarAsync(produto);
         await _unitOfWork.CommitAsync();
 

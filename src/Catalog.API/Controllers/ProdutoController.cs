@@ -1,5 +1,7 @@
 ﻿using Catalog.Application.Commands;
 using Catalog.Application.DTOs;
+using Catalog.Application.Queries;
+using Catalog.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,23 +25,51 @@ public class ProdutoController : ControllerBase
     }
 
     [HttpPut("{id:long}")]
-    public async Task<IActionResult> Atualizar(long id, [FromBody] ProdutoInputDTO dto)
+    public async Task<IActionResult> Atualizar(Guid id, [FromBody] ProdutoInputDTO dto)
     {
         var sucesso = await _mediator.Send(new AtualizarProdutoCommand(id, dto));
         return sucesso ? Ok("Produto atualizado com sucesso") : NotFound("Produto não encontrado");
     }
 
     [HttpDelete("{id:long}")]
-    public async Task<IActionResult> Delete(long id)
+    public async Task<IActionResult> Delete(Guid id)
     {
         var sucesso = await _mediator.Send(new RemoverProdutoCommand(id));
         return sucesso ? Ok("Produto removido com sucesso") : NotFound("Produto não encontrado");
     }
 
     [HttpPatch("{id:long}/disponibilidade")]
-    public async Task<IActionResult> AlterarDisponibilidade(long id, [FromQuery] bool disponivel)
+    public async Task<IActionResult> AlterarDisponibilidade(Guid id, [FromQuery] bool disponivel)
     {
         var sucesso = await _mediator.Send(new AlterarDisponibilidadeCommand(id, disponivel));
         return sucesso ? Ok("Disponibilidade alterada") : NotFound("Produto não encontrado");
+    }
+
+    [HttpGet("{id:long}")]
+    public async Task<ActionResult<Produto>> GetById(Guid id)
+    {
+        var produto = await _mediator.Send(new ObterProdutoPorIdQuery(id));
+        return produto is not null ? Ok(produto) : NotFound();
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Produto>>> GetAll()
+    {
+        var produtos = await _mediator.Send(new ObterTodosProdutosQuery());
+        return Ok(produtos);
+    }
+
+    [HttpGet("busca")]
+    public async Task<ActionResult<IEnumerable<Produto>>> Buscar([FromQuery] string termo)
+    {
+        var produtos = await _mediator.Send(new BuscarProdutoPorTermoQuery(termo));
+        return Ok(produtos);
+    }
+
+    [HttpGet("categoria/{nome}")]
+    public async Task<ActionResult<IEnumerable<Produto>>> GetByCategoria(string nome)
+    {
+        var produtos = await _mediator.Send(new ObterProdutosPorCategoriaQuery(nome));
+        return Ok(produtos);
     }
 }

@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Catalog.Application.Commands;
 
-public record RemoverProdutoCommand(long Id) : IRequest<bool>;
+public record RemoverProdutoCommand(Guid Id) : IRequest<bool>;
 
 public class RemoverProdutoCommandHandler : IRequestHandler<RemoverProdutoCommand, bool>
 {

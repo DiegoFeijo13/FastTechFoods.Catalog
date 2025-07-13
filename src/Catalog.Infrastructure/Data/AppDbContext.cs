@@ -19,11 +19,7 @@ public class AppDbContext : DbContext
             builder.Property(p => p.Descricao).HasMaxLength(500);
             builder.Property(p => p.Preco).HasColumnType("decimal(10,2)");
             builder.Property(p => p.Disponivel).IsRequired();
-
-            builder
-                .HasOne(p => p.Categoria)
-                .WithMany()
-                .IsRequired();
+            builder.Property(p => p.CategoriaId).IsRequired();
         });
 
         modelBuilder.Entity<Categoria>(builder =>

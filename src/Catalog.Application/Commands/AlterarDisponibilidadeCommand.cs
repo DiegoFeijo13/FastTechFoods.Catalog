@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Catalog.Application.Commands;
 
-public record AlterarDisponibilidadeCommand(long Id, bool Disponivel) : IRequest<bool>;
+public record AlterarDisponibilidadeCommand(Guid Id, bool Disponivel) : IRequest<bool>;
 
 public class AlterarDisponibilidadeCommandHandler : IRequestHandler<AlterarDisponibilidadeCommand, bool>
 {

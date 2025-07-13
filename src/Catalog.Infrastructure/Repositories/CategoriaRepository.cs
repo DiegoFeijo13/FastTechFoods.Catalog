@@ -29,7 +29,7 @@ internal class CategoriaRepository : ICategoriaRepository
     }
    
 
-    public async Task<Categoria?> ObterPorIdAsync(long id)
+    public async Task<Categoria?> ObterPorIdAsync(Guid id)
     {
         return await _dbContext.Categorias.AsNoTracking()
             .FirstOrDefaultAsync(c => c.Id == id);
@@ -40,4 +40,9 @@ internal class CategoriaRepository : ICategoriaRepository
         return await _dbContext.Categorias.AsNoTracking().ToListAsync();
     }
 
+    public async Task<Categoria?> ObterPorNomeAsync(string nome)
+    {
+        return await _dbContext.Categorias.AsNoTracking()
+                .FirstOrDefaultAsync(c => c.Nome == nome);
+    }
 }
