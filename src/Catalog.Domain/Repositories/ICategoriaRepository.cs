@@ -3,7 +3,8 @@
 namespace Catalog.Domain.Repositories;
 public interface ICategoriaRepository
 {
-    Task<Categoria?> ObterPorIdAsync(long id);
+    Task<Categoria?> ObterPorIdAsync(Guid id);
+    Task<Categoria?> ObterPorNomeAsync(string nome);
     Task<IEnumerable<Categoria>> ObterTodosAsync();
     Task AdicionarAsync(Categoria categoria);
     Task AtualizarAsync(Categoria categoria);

@@ -3,9 +3,9 @@
 namespace Catalog.Domain.Repositories;
 public interface IProdutoRepository
 {
-    Task<Produto?> ObterPorIdAsync(long id);
+    Task<Produto?> ObterPorIdAsync(Guid id);
     Task<IEnumerable<Produto>> ObterTodosAsync();
-    Task<IEnumerable<Produto>> ObterPorCategoriaAsync(string nomeCategoria);
+    Task<IEnumerable<Produto>> ObterPorCategoriaAsync(Guid categoriaId);
     Task<IEnumerable<Produto>> BuscarAsync(string termo);
     Task AdicionarAsync(Produto produto);
     Task AtualizarAsync(Produto produto);

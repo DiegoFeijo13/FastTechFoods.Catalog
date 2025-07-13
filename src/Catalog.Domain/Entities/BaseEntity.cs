@@ -1,7 +1,7 @@
 ﻿namespace Catalog.Domain.Entities;
 public abstract class BaseEntity
 {
-    public long Id { get; init; }
+    public Guid Id { get; init; } = new Guid();
     public DateTime DataCriacao { get; init; } = DateTime.UtcNow;
     public DateTime? DataAtualizacao { get; private set; }
 
