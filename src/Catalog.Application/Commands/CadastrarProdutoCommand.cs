@@ -1,4 +1,5 @@
 ﻿using Catalog.Application.DTOs;
+using Catalog.Application.Validators;
 using Catalog.Domain.Entities;
 using Catalog.Domain.Repositories;
 using MediatR;
@@ -43,6 +44,6 @@ public class CadastrarProdutoCommandHandler : IRequestHandler<CadastrarProdutoCo
         await _unitOfWork.CommitAsync();
 
         return true;
-    }
+    }     
 }
 

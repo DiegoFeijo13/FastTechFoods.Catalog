@@ -2,8 +2,10 @@
 using Catalog.Application.DTOs;
 using Catalog.Application.Queries;
 using Catalog.Domain.Entities;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace Catalog.API.Controllers;
 [Route("[controller]")]
@@ -18,15 +20,23 @@ public class ProdutoController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Cadastrar([FromBody] ProdutoInputDTO dto)
+    public async Task<IActionResult> Cadastrar([FromBody] ProdutoInputDTO dto, [FromServices] IValidator<ProdutoInputDTO> validator)
     {
+        var result = await validator.ValidateAsync(dto);
+        if (!result.IsValid)
+            return BadRequest(result.Errors.Select(e => new { e.ErrorMessage }));
+
         var sucesso = await _mediator.Send(new CadastrarProdutoCommand(dto));
         return sucesso ? Ok("Produto cadastrado com sucesso") : BadRequest("Erro ao cadastrar produto");
     }
 
     [HttpPut("{id:long}")]
-    public async Task<IActionResult> Atualizar(Guid id, [FromBody] ProdutoInputDTO dto)
+    public async Task<IActionResult> Atualizar(Guid id, [FromBody] ProdutoInputDTO dto, [FromServices] IValidator<ProdutoInputDTO> validator)
     {
+        var result = await validator.ValidateAsync(dto);
+        if (!result.IsValid)
+            return BadRequest(result.Errors.Select(e => new { e.ErrorMessage }));
+
         var sucesso = await _mediator.Send(new AtualizarProdutoCommand(id, dto));
         return sucesso ? Ok("Produto atualizado com sucesso") : NotFound("Produto não encontrado");
     }
