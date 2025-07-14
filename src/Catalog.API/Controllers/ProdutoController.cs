@@ -4,6 +4,7 @@ using Catalog.Application.Queries;
 using Catalog.Domain.Entities;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Catalog.API.Controllers;
@@ -19,6 +20,7 @@ public class ProdutoController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "gerente")]
     public async Task<IActionResult> Cadastrar([FromBody] ProdutoInputDTO dto, [FromServices] IValidator<ProdutoInputDTO> validator)
     {
         var result = await validator.ValidateAsync(dto);
@@ -30,6 +32,7 @@ public class ProdutoController : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
+    [Authorize(Roles = "gerente")]
     public async Task<IActionResult> Atualizar(Guid id, [FromBody] ProdutoInputDTO dto, [FromServices] IValidator<ProdutoInputDTO> validator)
     {
         var result = await validator.ValidateAsync(dto);
@@ -41,6 +44,7 @@ public class ProdutoController : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
+    [Authorize(Roles = "gerente")]
     public async Task<IActionResult> Delete(Guid id)
     {
         var sucesso = await _mediator.Send(new RemoverProdutoCommand(id));
@@ -48,6 +52,7 @@ public class ProdutoController : ControllerBase
     }
 
     [HttpPatch("{id:guid}/disponibilidade")]
+    [Authorize(Roles = "gerente")]
     public async Task<IActionResult> AlterarDisponibilidade(Guid id, [FromQuery] bool disponivel)
     {
         var sucesso = await _mediator.Send(new AlterarDisponibilidadeCommand(id, disponivel));
@@ -55,6 +60,7 @@ public class ProdutoController : ControllerBase
     }
 
     [HttpGet("{id:guid}")]
+    [Authorize(Roles = "cliente,gerente")]
     public async Task<ActionResult<Produto>> GetById(Guid id)
     {
         var produto = await _mediator.Send(new ObterProdutoPorIdQuery(id));
@@ -62,6 +68,7 @@ public class ProdutoController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Roles = "cliente,gerente")]
     public async Task<ActionResult<IEnumerable<Produto>>> GetAll()
     {
         var produtos = await _mediator.Send(new ObterTodosProdutosQuery());
@@ -69,6 +76,7 @@ public class ProdutoController : ControllerBase
     }
 
     [HttpGet("busca")]
+    [Authorize(Roles = "cliente,gerente")]
     public async Task<ActionResult<IEnumerable<Produto>>> Buscar([FromQuery] string termo)
     {
         var produtos = await _mediator.Send(new BuscarProdutoPorTermoQuery(termo));
@@ -76,6 +84,7 @@ public class ProdutoController : ControllerBase
     }
 
     [HttpGet("categoria/{nome}")]
+    [Authorize(Roles = "cliente,gerente")]
     public async Task<ActionResult<IEnumerable<Produto>>> GetByCategoria(string nome)
     {
         var produtos = await _mediator.Send(new ObterProdutosPorCategoriaQuery(nome));
