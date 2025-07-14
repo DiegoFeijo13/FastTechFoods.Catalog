@@ -5,7 +5,6 @@ using Catalog.Domain.Entities;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
 
 namespace Catalog.API.Controllers;
 [Route("[controller]")]
@@ -30,7 +29,7 @@ public class ProdutoController : ControllerBase
         return sucesso ? Ok("Produto cadastrado com sucesso") : BadRequest("Erro ao cadastrar produto");
     }
 
-    [HttpPut("{id:long}")]
+    [HttpPut("{id:guid}")]
     public async Task<IActionResult> Atualizar(Guid id, [FromBody] ProdutoInputDTO dto, [FromServices] IValidator<ProdutoInputDTO> validator)
     {
         var result = await validator.ValidateAsync(dto);
@@ -41,21 +40,21 @@ public class ProdutoController : ControllerBase
         return sucesso ? Ok("Produto atualizado com sucesso") : NotFound("Produto não encontrado");
     }
 
-    [HttpDelete("{id:long}")]
+    [HttpDelete("{id:guid}")]
     public async Task<IActionResult> Delete(Guid id)
     {
         var sucesso = await _mediator.Send(new RemoverProdutoCommand(id));
         return sucesso ? Ok("Produto removido com sucesso") : NotFound("Produto não encontrado");
     }
 
-    [HttpPatch("{id:long}/disponibilidade")]
+    [HttpPatch("{id:guid}/disponibilidade")]
     public async Task<IActionResult> AlterarDisponibilidade(Guid id, [FromQuery] bool disponivel)
     {
         var sucesso = await _mediator.Send(new AlterarDisponibilidadeCommand(id, disponivel));
         return sucesso ? Ok("Disponibilidade alterada") : NotFound("Produto não encontrado");
     }
 
-    [HttpGet("{id:long}")]
+    [HttpGet("{id:guid}")]
     public async Task<ActionResult<Produto>> GetById(Guid id)
     {
         var produto = await _mediator.Send(new ObterProdutoPorIdQuery(id));
