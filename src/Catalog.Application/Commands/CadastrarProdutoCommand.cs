@@ -4,7 +4,6 @@ using Catalog.Domain.Entities;
 using Catalog.Domain.Events;
 using Catalog.Domain.Repositories;
 using MassTransit;
-using MassTransit.Transports;
 using MediatR;
 
 namespace Catalog.Application.Commands;
