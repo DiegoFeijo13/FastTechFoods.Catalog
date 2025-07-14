@@ -1,7 +1,10 @@
 ﻿using Catalog.Application.DTOs;
-using Catalog.Application.Validators;
+using Catalog.Application.Events;
 using Catalog.Domain.Entities;
+using Catalog.Domain.Events;
 using Catalog.Domain.Repositories;
+using MassTransit;
+using MassTransit.Transports;
 using MediatR;
 
 namespace Catalog.Application.Commands;
@@ -12,12 +15,14 @@ public class CadastrarProdutoCommandHandler : IRequestHandler<CadastrarProdutoCo
     private readonly IProdutoRepository _produtoRepository;
     private readonly ICategoriaRepository _categoriaRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IPublishEndpoint _publish;
 
-    public CadastrarProdutoCommandHandler(IProdutoRepository produtoRepository, ICategoriaRepository categoriaRepository, IUnitOfWork unitOfWork)
+    public CadastrarProdutoCommandHandler(IProdutoRepository produtoRepository, ICategoriaRepository categoriaRepository, IUnitOfWork unitOfWork, IPublishEndpoint publish)
     {
         _produtoRepository = produtoRepository;
         _categoriaRepository = categoriaRepository;
         _unitOfWork = unitOfWork;
+        _publish = publish;
     }
 
     public async Task<bool> Handle(CadastrarProdutoCommand request, CancellationToken cancellationToken)
@@ -42,6 +47,14 @@ public class CadastrarProdutoCommandHandler : IRequestHandler<CadastrarProdutoCo
         var produto = new Produto(dto.Nome, dto.Descricao, dto.Preco, categoriaId);
         await _produtoRepository.AdicionarAsync(produto);
         await _unitOfWork.CommitAsync();
+
+        await _publish.Publish<IProdutoCadastradoEvent>(new ProdutoCadastradoEvent
+        {
+            Id = produto.Id,
+            Nome = produto.Nome,
+            Categoria = categoria.Nome,
+            Preco = produto.Preco
+        });
 
         return true;
     }     
