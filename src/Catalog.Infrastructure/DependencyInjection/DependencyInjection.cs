@@ -15,7 +15,7 @@ public static class DependencyInjection
     {
         AddDbContext(services, config);
         AddRepositories(services);
-        AddMassTransit(services);
+        AddMassTransit(services, config);
 
         return services;
     }
@@ -52,16 +52,16 @@ public static class DependencyInjection
         services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 
-    private static void AddMassTransit(IServiceCollection services)
+    private static void AddMassTransit(IServiceCollection services, IConfiguration config)
     {
         services.AddMassTransit(x =>
         {
             x.UsingRabbitMq((ctx, cfg) =>
             {
-                cfg.Host("localhost", "/", h =>
+                cfg.Host("rabbitmq", "/", h =>
                 {
-                    h.Username("guest");
-                    h.Password("guest");
+                    h.Username(config["RabbitMQSettings:Username"]!);
+                    h.Password(config["RabbitMQSettings:Password"]!);
                 });
             });
         });
