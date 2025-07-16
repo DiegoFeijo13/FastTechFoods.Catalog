@@ -22,7 +22,7 @@ namespace Catalog.Application.Validators {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class ResourceExceptionMessages {
+    public class ResourceExceptionMessages {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Catalog.Application.Validators {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Catalog.Application.Validators.ResourceExceptionMessages", typeof(ResourceExceptionMessages).Assembly);
@@ -51,7 +51,7 @@ namespace Catalog.Application.Validators {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Catalog.Application.Validators {
         /// <summary>
         ///   Looks up a localized string similar to Categoria é obrigatória.
         /// </summary>
-        internal static string CATEGORY_INVALID {
+        public static string CATEGORY_INVALID {
             get {
                 return ResourceManager.GetString("CATEGORY_INVALID", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace Catalog.Application.Validators {
         /// <summary>
         ///   Looks up a localized string similar to A descrição não pode ser vazia.
         /// </summary>
-        internal static string DESCRIPTION_EMPTY {
+        public static string DESCRIPTION_EMPTY {
             get {
                 return ResourceManager.GetString("DESCRIPTION_EMPTY", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace Catalog.Application.Validators {
         /// <summary>
         ///   Looks up a localized string similar to O nome não pode ser vazio.
         /// </summary>
-        internal static string NAME_EMPTY {
+        public static string NAME_EMPTY {
             get {
                 return ResourceManager.GetString("NAME_EMPTY", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace Catalog.Application.Validators {
         /// <summary>
         ///   Looks up a localized string similar to O preço deve ser maior que zero.
         /// </summary>
-        internal static string PRICE_INVALID {
+        public static string PRICE_INVALID {
             get {
                 return ResourceManager.GetString("PRICE_INVALID", resourceCulture);
             }

@@ -27,7 +27,7 @@
 
   <ItemGroup>
     <EmbeddedResource Update="Validators\ResourceExceptionMessages.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ResourceExceptionMessages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
