@@ -1,4 +1,8 @@
-﻿using Catalog.Domain.Repositories;
+﻿using Catalog.Application.Events;
+using Catalog.Domain.Entities;
+using Catalog.Domain.Events;
+using Catalog.Domain.Repositories;
+using MassTransit;
 using MediatR;
 
 namespace Catalog.Application.Commands;
@@ -9,11 +13,13 @@ public class RemoverProdutoCommandHandler : IRequestHandler<RemoverProdutoComman
 {
     private readonly IProdutoRepository _produtoRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IPublishEndpoint _publish;
 
-    public RemoverProdutoCommandHandler(IProdutoRepository produtoRepository, IUnitOfWork unitOfWork)
+    public RemoverProdutoCommandHandler(IProdutoRepository produtoRepository, IUnitOfWork unitOfWork, IPublishEndpoint publish)
     {
         _produtoRepository = produtoRepository;
         _unitOfWork = unitOfWork;
+        _publish = publish;
     }
 
     public async Task<bool> Handle(RemoverProdutoCommand request, CancellationToken cancellationToken)
@@ -23,6 +29,11 @@ public class RemoverProdutoCommandHandler : IRequestHandler<RemoverProdutoComman
 
         await _produtoRepository.RemoverAsync(produto);
         await _unitOfWork.CommitAsync();
+
+        await _publish.Publish<IProdutoRemovidoEvent>(new ProdutoRemovidoEvent
+        {
+            Id = produto.Id
+        });
 
         return true;
     }

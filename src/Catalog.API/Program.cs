@@ -1,3 +1,4 @@
+using Catalog.API.Filter;
 using Catalog.Application.DependencyInjection;
 using Catalog.Infrastructure.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -42,7 +43,7 @@ builder.Services.AddSwaggerGen(c =>
     {
         Title = "FastTechFoods Catalog API",
         Version = "v1",
-        Description = "API de Cat�logo de produtos do sistema FastTechFoods"
+        Description = "API de Catálogo de produtos do sistema FastTechFoods"
     });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
