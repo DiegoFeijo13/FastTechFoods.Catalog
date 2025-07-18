@@ -33,7 +33,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(opt => opt.Filters.Add<ExceptionFilter>());
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -42,7 +42,7 @@ builder.Services.AddSwaggerGen(c =>
     {
         Title = "FastTechFoods Catalog API",
         Version = "v1",
-        Description = "API de Catálogo de produtos do sistema FastTechFoods"
+        Description = "API de Catï¿½logo de produtos do sistema FastTechFoods"
     });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
