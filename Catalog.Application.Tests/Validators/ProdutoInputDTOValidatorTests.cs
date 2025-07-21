@@ -1,9 +1,7 @@
 ﻿using Catalog.Application.DTOs;
 using Catalog.Application.Validators;
-using Catalog.Domain.Entities;
-using MassTransit.Internals.GraphValidation;
 
-namespace Catalog.Tests;
+namespace Catalog.Application.Tests.Validators;
 public class ProdutoInputDTOValidatorTests
 {
     private readonly ProdutoInputDTOValidator _validator = new();
